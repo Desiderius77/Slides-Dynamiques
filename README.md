@@ -52,14 +52,15 @@ Ajout des fonctionalités suivantes :
     - mise à jours de Node.js
     - mise à jour d'Express
     - éclaircir/nettoyer le code
-    - éviter les chemins en dur (recherche des diapos, etc)
-    - correction du bug vidéo
-    
+    - Amélioration de la communication des messages 
+    - éviter les chemins en dur 
+    - Possibilité de choisir une présentation sur le disque
+
 VERSION 5.0
 ----------------------------  
 
 Ajout des fonctionalités suivantes :
- 
+    - correction du bug vidéo
     - émetteur / proxy -> client
     - émetteur -> proxy / client
     - émetteur / proxy -> proxy / client
