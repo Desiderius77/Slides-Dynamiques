@@ -55,13 +55,12 @@ Ajout des fonctionalités suivantes :
     - Amélioration de la communication des messages 
     - éviter les chemins en dur 
     - Possibilité de choisir une présentation sur le disque
-    - correction du bug vidéo
-    
+
 VERSION 5.0
 ----------------------------  
 
 Ajout des fonctionalités suivantes :
- 
+    - correction du bug vidéo
     - émetteur / proxy -> client
     - émetteur -> proxy / client
     - émetteur / proxy -> proxy / client
