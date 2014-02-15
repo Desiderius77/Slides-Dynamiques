@@ -52,7 +52,9 @@ Ajout des fonctionalités suivantes :
     - mise à jours de Node.js
     - mise à jour d'Express
     - éclaircir/nettoyer le code
-    - éviter les chemins en dur (recherche des diapos, etc)
+    - Amélioration de la communication des messages 
+    - éviter les chemins en dur 
+    - Possibilité de choisir une présentation sur le disque
     - correction du bug vidéo
     
 VERSION 5.0
