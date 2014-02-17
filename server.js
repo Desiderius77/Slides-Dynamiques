@@ -7,6 +7,7 @@ var socket = io.listen(server);
 var fs = require('fs');
 var formidable = require('formidable');
 var currentSlideId;
+var videosStates;
 
  // Loading server and static repository definition to include inside it.
 app.configure(function () {
@@ -27,28 +28,41 @@ app.post('/public/ppt', function(req, res){
 
     console.log(form.uploadDir);
 
-    form.parse(req, function(err, fields, files){
-      if (err) return res.end('You found error');
-      console.log(files.image);
-    });
+    form
+    .on('error', function(err) {
+    	console.log("An error occured");
+    	throw err;
+    })
 
-    form.on('file', function(field, file) {
+    .on('field', function(field, value) {
+		//receive form fields here
+	})
+
+    /* this is where the renaming happens */
+    .on ('fileBegin', function(name, file){
         //rename the incoming file to the file's name
-        fs.rename(file.path, form.uploadDir + "/Presentation.html", function(err){
-        	preventClients(); //tell to all clients to update their presentation
-        });  
+        file.path = form.uploadDir + "/" + file.name;
+	})
+
+    .on('file', function(field, file) {
+        //On file received
+        console.log("new file: " + './ppt/' + file.name);
+        preventClients('./ppt/' + file.name); //tell to all clients to update their presentation
+    })
+
+    .on('progress', function(bytesReceived, bytesExpected) {
+    	//self.emit('progess', bytesReceived, bytesExpected)
+    	var percent = (bytesReceived / bytesExpected * 100) | 0;
+    	process.stdout.write('Uploading: ' + percent + '%\r');
+    })
+
+    .on('end', function() {
+
     });
 
-    form.on('progress', function(bytesReceived, bytesExpected) {
-        console.log(bytesReceived + ' ' + bytesExpected);
-    });
+    form.parse(req); 
 
-    form.on('error', function(err) {
-        res.writeHead(200, {'content-type': 'text/plain'});
-        res.end('error:\n\n'+util.inspect(err));
-    });
-
-   return;
+    return;
 });
 server.listen(8333);
 
@@ -61,6 +75,7 @@ var my_timer;
 var TempoPPT;
 var tab_client = [];
 var arrayMasters = [];
+var users = [];
 
 // We define client side file
 app.get('/', function (req, res) {
@@ -76,6 +91,8 @@ socket.on('connection', function (client) {
 	client.on('ouvertureSession', function (connection) {
 		var user = JSON.parse(connection);
         allClients += 1;
+
+        console.log("new client: " + client.id);
         
         if (user.identifant === "root" && user.password === "pass") {
             asRoot = true;
@@ -143,6 +160,10 @@ socket.on('connection', function (client) {
         console.log("demande annimateur " + identifiant);
     }); 
 
+    client.on('click', function (eltId) {
+        client.broadcast.emit('click', eltId);
+    });
+
 	// Executed when a client disconnects
 	client.on('disconnect', function () {
 		console.log('disconnect ' + TempoPseudo);
@@ -171,6 +192,6 @@ socket.on('connection', function (client) {
 	});
 });
 
-function preventClients(){
-	socket.sockets.emit('updateSlide');
+function preventClients(filePath){
+	socket.sockets.emit('updateSlide', filePath);
 }
