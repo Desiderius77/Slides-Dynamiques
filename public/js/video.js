@@ -3,11 +3,11 @@ function initVideo() {
     "use strict";
     // We retrieve video element  
     var videos = $($('#notre_frame').contents()).find("video");
-    
+
     if (videos.length == 0){
         return;
     }
-    
+
     videos.each(function(){
         $(this)[0].controls = false;
 
