@@ -177,7 +177,7 @@ $(document).ready(function () {
 //Load a new presentation selected by the animator
 function updateSlide(filePath){ 
     console.log("***Updating slide...");  
-    $('#notre_frame').attr('src', filePath); //$('#notre_frame').attr('src'));
+    $('#notre_frame').attr('src', filePath);
     console.log("***Slide updated");
 }
 
